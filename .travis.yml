@@ -1,3 +1,12 @@
 language: node_js
 node_js:
-  - "node"
+  - node
+deploy:
+  provider: npm
+  email: jonathan.griggs@gmail.com
+  api_key:
+    secure: vMZyWfSiAFhTw9oKEQAXwsE4Z06wlXoOJNp7fiSwRn/PVIET1dXGbVHqibfhDCprJO//0/wPr75EgQeaftsM5qTgFF17hwIxQHWIsyj4jGfWyClUkdT/e4A6Apd9qrVAJ4aZNqwPzEnVioSa2d3fMT82b/HtsOQJZvXAMkzs5RzHGkFJw8h9FHA9HRCX8A7Zew6qcmG1XLrtctMYFn/My9Doc+5UzPyjnVFCG+5eii3i9vT0EG0MOa0oOakm0pV0eoYRX594mFEsJZ5m0u78xXyRUpZ10heOatODbhDFyMT4v+wKFyJpXjixA7ueU6rXTHNFuzm5vi5rcfqua+Mwwny04Mszyr09n9uZNpzJjeLXUjNHjwx80Ge+WzQ2aikLaUD48IVsoa0lErbkWwesEsWFznEMVz1n19jGn7S/oY4b64rmMI1SzcQ7yTkN75+zBhrltOIcw0FoDq6oQKKUX0n1aNYfRwTzEYexZfplYZ7vlJ4ERy2CqkvFgIqkaI9/cWyYyDFbFxuIbVOEgHTABWb56/Ue2VCpyePBudmWzr7punVxGRCHxIUdXZt3zOATS+hUVNiaTcQhGdGytv8tuhrPdiz9hzVlNmhcfL0c6q82x5VP1Qdw4wgGuR02bSYbtRf6fHTThpI4LHjORJiy2drm/uI2p6vLoN2w6hnM7HI=
+  on:
+    tags: true
+    repo: growombud/prolly
+    branch: master
