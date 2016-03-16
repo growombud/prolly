@@ -1,0 +1,34 @@
+{
+  "name": "prolly",
+  "version": "0.1.0",
+  "description": "A minimalist utility library for ES6 Native Promises",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R spec ./test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/growombud/prolly.git"
+  },
+  "keywords": [
+    "promise",
+    "es6",
+    "native",
+    "utility",
+    "sequence",
+    "series",
+    "minimalist",
+    "small"
+  ],
+  "author": "Jonathan Griggs <jonathan.griggs@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/growombud/prolly/issues"
+  },
+  "homepage": "https://github.com/growombud/prolly#readme",
+  "devDependencies": {
+    "eslint": "^2.4.0",
+    "eslint-config-airbnb": "^6.1.0",
+    "mocha": "^2.4.5"
+  }
+}

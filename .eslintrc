@@ -1,0 +1,28 @@
+{
+  "extends":"airbnb/base",
+  "env": {
+    "node":true,
+    "es6":true
+  },
+  "ecmaFeatures": {
+    "modules": false
+  },
+  "rules": {
+    "func-names": 2,
+    "indent": [ 2, 2, {"SwitchCase": 1}],
+    "no-console": 2,
+    "no-multi-spaces": [ 2, { "exceptions": { "VariableDeclarator": true, "AssignmentExpression": true}}],
+    "strict": [ 2, "global" ],
+    "no-unused-vars": [2, {"vars": "all", "args": "none"}],
+
+    "no-nested-ternary": 1,
+    "one-var": [ 1, { "uninitialized": "always", "initialized": "never" }],
+
+    "comma-dangle": 0,
+    "id-length": 0,
+    "new-cap": 0,
+
+    "camelcase": 0,
+    "quotes": 0
+  }
+}
