@@ -27,9 +27,10 @@
   },
   "homepage": "https://github.com/growombud/prolly#readme",
   "devDependencies": {
-    "eslint": "^2.4.0",
-    "eslint-config-airbnb": "^6.1.0",
-    "mocha": "^2.4.5"
+    "eslint": "2.4.0",
+    "eslint-config-airbnb": "6.1.0",
+    "mocha": "2.4.5",
+    "should": "8.2.2"
   },
   "engine": "node >= 4.0.0"
 }
