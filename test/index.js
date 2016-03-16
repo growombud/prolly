@@ -41,4 +41,24 @@ describe('Prolly', () => {
         }, [Number.NEGATIVE_INFINITY]));
     });
   });
+
+  describe('.wait', () => {
+    const wait = Prolly.wait;
+    it('should return after at least the specified number of milliseconds', () => {
+      const now    = Date.now();
+      const millis = 5;
+      return wait( millis )
+        .then(() => Date.now().should.be.aboveOrEqual(now + millis));
+    });
+
+    it('should return a provided value after the specified number of milliseconds', () => {
+      const now    = Date.now();
+      const millis = 5;
+      return wait( millis, now )
+        .then( value => {
+          value.should.equal( now );
+          Date.now().should.be.aboveOrEqual(value + millis);
+        });
+    });
+  });
 });
