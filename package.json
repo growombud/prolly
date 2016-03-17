@@ -1,10 +1,12 @@
 {
   "name": "prolly",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "A minimalist utility library for ES6 Native Promises",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -R spec ./test"
+    "test": "npm run mocha && npm run lint",
+    "mocha": "mocha -R spec ./test",
+    "lint": "./node_modules/eslint/bin/eslint.js ."
   },
   "repository": {
     "type": "git",

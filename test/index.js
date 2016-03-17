@@ -1,3 +1,5 @@
+/*eslint-disable */
+'use strict';
 const should = require('should');
 const _      = require('lodash');
 const Prolly = require('../index.js');
@@ -109,6 +111,28 @@ describe('Prolly', () => {
         .then( value => {
           value.should.equal( now );
           Date.now().should.be.aboveOrEqual(value + millis - 1);
+        });
+    });
+  });
+
+  describe('.poll', () => {
+    const poll = Prolly.poll;
+    it('should resolve value after condition is true', () => {
+      const interval  = 2;
+      const multiplier = 10;
+      const start  = Date.now();
+      const target = start + (interval*multiplier);
+
+      let counter = 0;
+      const increment = () => {
+        counter++;
+        return Date.now();
+      }
+
+      return poll( () => Promise.resolve(increment()), interval, result => result >= target, 1)
+        .then( result => {
+          result.should.be.aboveOrEqual(target)
+          counter.should.be.aboveOrEqual(multiplier / 2);
         });
     });
   });
