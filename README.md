@@ -22,6 +22,8 @@ Doesn't that feel better?
 
 If you need everything that a more robust Promise library provides, then Prolly is not a great fit for your needs. If, however, ES6 Native Promises are almost - but just not quite - good enough, give Prolly a try.
 
+Trigger PR
+
 ### License
 
 The MIT License (MIT)
