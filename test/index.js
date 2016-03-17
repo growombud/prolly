@@ -12,7 +12,7 @@ describe('Prolly', () => {
           v.should.be.greaterThan(_.last(accu));
           return accu.concat(v);
         }, [Number.NEGATIVE_INFINITY]));
-    })
+    });
 
     it('should evaluate a sequence of promises, in series, with an initial value', () => {
       const vals  = new Array(4).fill(2);
@@ -40,6 +40,12 @@ describe('Prolly', () => {
           return accu.concat(v);
         }, [Number.NEGATIVE_INFINITY]));
     });
+
+    it('should return results with nested arrays', () => {
+      const vals  = new Array(4).fill(2);
+      return sequence( _.map(vals, v => () => new Promise((resolve, reject) => setTimeout(() => resolve([Date.now()]), v))), [[Date.now()]])
+        .then(results => _.each(results, r => r.should.be.an.Array()));
+    })
   });
 
   describe('.mapSequence', () => {
@@ -79,6 +85,12 @@ describe('Prolly', () => {
           return accu.concat(v);
         }, [Number.NEGATIVE_INFINITY]));
     });
+
+    it('should return results with nested arrays', () => {
+      const vals  = new Array(4).fill(2);
+      return mapSequence(vals, v => new Promise((resolve, reject) => setTimeout(() => resolve([Date.now()]), v)), [[Date.now()]])
+        .then(results => _.each(results, r => r.should.be.an.Array()));
+    })
   });
 
   describe('.wait', () => {
@@ -87,7 +99,7 @@ describe('Prolly', () => {
       const now    = Date.now();
       const millis = 5;
       return wait( millis )
-        .then(() => Date.now().should.be.aboveOrEqual(now + millis));
+        .then(() => Date.now().should.be.aboveOrEqual(now + millis - 1));
     });
 
     it('should return a provided value after the specified number of milliseconds', () => {
@@ -96,7 +108,7 @@ describe('Prolly', () => {
       return wait( millis, now )
         .then( value => {
           value.should.equal( now );
-          Date.now().should.be.aboveOrEqual(value + millis);
+          Date.now().should.be.aboveOrEqual(value + millis - 1);
         });
     });
   });

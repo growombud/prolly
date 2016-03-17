@@ -2,7 +2,10 @@ const isFunction = object => typeof(object) === 'function';
 
 exports.sequence = (arr, initial_value) => (arr || []).reduce((p, fn, index) =>
   p.then(results => Promise.resolve(isFunction(fn) ? fn.call(fn, index) : fn)
-    .then(result => results.concat(result))), Promise.resolve(initial_value || []));
+    .then(result => {
+      results.push(result);
+      return results;
+    })), Promise.resolve(initial_value || []));
 
 exports.mapSequence = (arr, fn, initial_value) =>
   exports.sequence((arr || []).map(item => index => fn.call(fn, item, index)), initial_value);
