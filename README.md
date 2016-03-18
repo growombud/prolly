@@ -45,8 +45,6 @@ const Prolly = require('prolly');
 # API
 
 ## sequence ( fnArray [, starting_results] )
-
-##### Description
 Returns a promise that resolves after all functions have been called sequentially
 
 ##### Use Case
@@ -69,8 +67,6 @@ Prolly.sequence( [ () => saveData( someData ),
 ```
 
 ## mapSequence ( array, mapperFn, [, starting_results] )
-
-##### Description
 Returns a promise that resolves after all array members have called the mapper function sequentially
 
 ##### Use Case
@@ -95,7 +91,7 @@ Prolly.mapSequence( lineage, person => savePerson( person ) );
 
 ---
 
-### Contributing
+## Contributing
 
 1. Fork repo
 2. Add / modify tests
@@ -103,7 +99,7 @@ Prolly.mapSequence( lineage, person => savePerson( person ) );
 4. Open PR
   * (Optional) link to your development soundtrack
 
-### License
+## License
 
 The MIT License (MIT)
 
@@ -127,6 +123,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-### Soundtrack
+## Soundtrack
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/ixJhTMOM3PE/0.jpg)](https://www.youtube.com/watch?v=ixJhTMOM3PE)
