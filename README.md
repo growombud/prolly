@@ -1,8 +1,6 @@
 # ¯\\_(ツ)_/¯ prolly [![Build Status](https://travis-ci.org/growombud/prolly.svg?branch=master)](https://travis-ci.org/growombud/prolly) [![npm version](https://badge.fury.io/js/prolly.svg)](https://badge.fury.io/js/prolly)
 A minimalist utility library for ES6 Native Promises
 
----
-
 ## Overview
 Prolly is a small utility library intended to bridge the gap between Native ES6 Promises and more fully-featured Promise libraries like Bluebird, when, and Q.
 
@@ -44,7 +42,6 @@ npm install prolly
 const Prolly = require('prolly');
 ```
 
----
 # API
 
 ## sequence ( fnArray [, starting_results] )
@@ -100,9 +97,12 @@ Prolly.mapSequence( lineage, person => savePerson( person ) );
 
 ### Contributing
 
-1. Fork repo, add code, add tests, submit PR, pass build.
+1. Fork repo
+2. Add / modify tests
+3. Add / modify implementation
+4. Open PR
+  * (Optional) link to your development soundtrack
 
----
 ### License
 
 The MIT License (MIT)
@@ -127,7 +127,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
----
 ### Soundtrack
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/ixJhTMOM3PE/0.jpg)](https://www.youtube.com/watch?v=ixJhTMOM3PE)
