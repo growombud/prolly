@@ -117,6 +117,7 @@ describe('Prolly', () => {
 
   describe('.poll', () => {
     const poll = Prolly.poll;
+
     it('should resolve value after condition is true', () => {
       const interval  = 2;
       const multiplier = 10;
@@ -132,6 +133,26 @@ describe('Prolly', () => {
       return poll( () => Promise.resolve(increment()), interval, result => result >= target, 1)
         .then( result => {
           result.should.be.aboveOrEqual(target)
+          counter.should.be.aboveOrEqual(multiplier / 2);
+        });
+    });
+
+    it('should reject with error before condition is true', () => {
+      const interval  = 2;
+      const multiplier = 10;
+      const start  = Date.now();
+      const target = start + (interval*multiplier);
+
+      let counter = 0;
+      const increment = () => {
+        counter++;
+        return Date.now();
+      }
+
+      return poll( () => Date.now() >= target ? Promise.reject(counter) : Promise.resolve(increment()), interval, result => result >= target, 1)
+        .then( result => Promise.reject('did not reject before promise resolution') )
+        .catch( err => {
+          err.should.be.eql(counter);
           counter.should.be.aboveOrEqual(multiplier / 2);
         });
     });
