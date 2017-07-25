@@ -1,9 +1,8 @@
-'use strict';
-const isFunction = object => typeof(object) === 'function';
+const isFunction = object => typeof (object) === 'function';
 
 exports.sequence = (arr, initial_value) => (arr || []).reduce((p, fn, index) =>
   p.then(results => Promise.resolve(isFunction(fn) ? fn.call(fn, index) : fn)
-    .then(result => {
+    .then((result) => {
       results.push(result);
       return results;
     })), Promise.resolve(initial_value || []));
@@ -20,7 +19,7 @@ exports.poll = (fn, delay, conditionFn, initial_delay) => new Promise((resolve, 
   const check = () => {
     p = p.then(() => Promise.resolve(fn.call(fn)))
       .then(result =>
-        conditionFn.call(conditionFn, result) ? resolve(result) : schedule(delay, check))
+        (conditionFn.call(conditionFn, result) ? resolve(result) : schedule(delay, check)))
       .catch(err => reject(err));
   };
   schedule(initial_delay || 0, check);
