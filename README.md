@@ -1,5 +1,9 @@
-# ¯\\_(ツ)_/¯ prolly [![Build Status](https://travis-ci.org/growombud/prolly.svg?branch=master)](https://travis-ci.org/growombud/prolly) [![npm version](https://badge.fury.io/js/prolly.svg)](https://badge.fury.io/js/prolly)
+# ¯\\_(ツ)_/¯ prolly
 A minimalist utility library for ES6 Native Promises
+
+[![npm version](https://badge.fury.io/js/prolly.svg)](https://badge.fury.io/js/prolly)
+[![Build Status](https://travis-ci.org/growombud/prolly.svg?branch=master)](https://travis-ci.org/growombud/prolly)
+[![codecov](https://codecov.io/gh/growombud/prolly/branch/master/graph/badge.svg)](https://codecov.io/gh/growombud/prolly)
 
 ## Overview
 Prolly is a small utility library intended to bridge the gap between Native ES6 Promises and more fully-featured Promise libraries like Bluebird, when, and Q.
@@ -15,8 +19,8 @@ const chunkPromise = (arr, fn, size) => _.reduce(_.chunk(arr, size), (p, batch) 
 
 With Prolly, you could rewrite that as:
 ```javascript
-// A function that returns a chunked sequence of Promises with a little help from lodash
-const chunkPromise = (arr, fn, size) => Prolly.mapSequence(_.chunk(arr, size), fn);
+// A function that returns a chunked sequence of Promises
+const chunkPromise = (arr, fn, size) => Prolly.chunkSequence(arr, size, fn);
 ```
 
 Doesn't that feel better?
@@ -70,7 +74,7 @@ Prolly.sequence( [ () => saveData( someData ),
 Returns a promise that resolves after all array members have called the mapper function sequentially
 
 ##### Use Case
-Resolving a sequential chain of *homogenous* asynchronous operations over an array of values;
+Resolving a sequential chain of *homogeneous* asynchronous operations over an array of values;
 
 Useful where a common operation must be performed on different data, but order is critical, or external, asynchronous calls should be limited to a concurrency of 1.
 
@@ -85,9 +89,77 @@ const lineage = [ parent, child, grandchild, great-grandchild ];
 Prolly.mapSequence( lineage, person => savePerson( person ) );
 ```
 
+## chunkSequence ( array, chunkSize, mapperFn, [, starting_results] )
+Returns a promise that resolves after all array members, batched-into-subArrays of specified size, have called the mapper function sequentially.
+
+##### Use Case
+Resolving a sequential chain of *homogeneous* asynchronous operations over a large array of values, divided into smaller batches of a specified size.
+
+Useful where a common operation must be performed on different data, order is still critical, but the common operation can handle batches of data.
+
+##### Example
+
+1. Parent data should be persisted before children, grandchildren, and on...
+2. Input array is ordered accordingly
+3. The ```savePersons()``` batch operation can handle a maximum of 2 persons at a time
+
+```
+const lineage = [ parent, child, grandchild, great-grandchild ];
+const maxBatchSize = 2;
+
+Prolly.chunkSequence( lineage, maxBatchSize, personArr => savePersons( personArr ) );
+```
+
 ## wait ( time_in_millis [, returnValue] )
 
-## poll ( fn, interval_in_millis, filterFn [, delay_in_millis] )
+Returns a promise that resolves to an _optional_ value after a specified amount of time.
+
+##### Use Case
+
+Solves a need to delay execution of code in a Promise chain by some arbitrary amount of time. Could be useful for testing of asynchronous code, or in working-around eventual-consistency delays in an external system.
+
+##### Example
+
+1. `asyncFn`, returns a Promise, but does some further asynchronous work in an external system, guaranteed to finish in two seconds.
+2. `asyncFn` must finish doing its work before `dependentFn` is executed
+
+```
+
+asyncFn()
+  .then(result => Prolly.wait(2000, result))
+  .then(result => dependentFn(result));
+```
+
+## poll ( fn, interval_in_millis, validateFn [, initial_delay_in_millis [, maximum_attempts]] )
+
+Returns a promise that calls a function (```fn```) at a specified interval (```interval_in_millis```) until the provided validation function (```validateFn```) returns a truthy value.
+
+##### Use Case
+
+Fulfills a need to execute any asynchronous function repeatedly until a specific condition - usually dependent on the result of the asynchronous call - is met.
+
+Real-world use-cases include application initialization scenarios such as waiting for an external, dependent service to become available.
+
+##### Example
+
+1. ```isReady``` function returns the status of an external system.
+2. ```isReady``` must return true before subsequent code is executed.
+3. Give it 1 second, before calling ```isReady``` the first time.
+4. ```isReady``` should be called no more than once every 5 seconds
+5. ```isReady``` should be called a maximum of 10 times, before it throws an exception
+
+```
+
+const validateFn = status => status || false;
+
+Prolly.poll(isReady, 5000, validateFn, 1000, 10)
+  .then(status => {
+    // External service is ready, do your business here...  
+  })
+  .catch(err => {
+    // isReady either exceeded 10 attempts, or threw another error. Deal with it here...
+  });
+```
 
 ---
 
