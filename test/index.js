@@ -107,13 +107,22 @@ describe('Prolly', () => {
       const vals  = new Array(8).fill(4);
       const chunkSize = 2;
       return chunkSequence(vals, chunkSize, v =>
-        new Promise(resolve => setTimeout(() => resolve(Date.now()), v)))
+        new Promise(resolve => setTimeout(() => resolve(Date.now()), v[0])))
         .then(results => {
           results.should.be.an.Array().of.length(vals.length / chunkSize);
           results.reduce((accu, v) => {
             v.should.be.greaterThan(accu[accu.length - 1]);
             return accu.concat(v);
           }, [Number.NEGATIVE_INFINITY]);
+        });
+    });
+
+    it('should not blow-up if an empty array is provided', () => {
+      const chunkSize = 2;
+      return chunkSequence([], chunkSize, v =>
+        new Promise(resolve => setTimeout(() => resolve(Date.now()), v[0])))
+        .then(results => {
+          results.should.be.an.Array().of.length(0);
         });
     });
   });
