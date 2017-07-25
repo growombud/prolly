@@ -166,5 +166,27 @@ describe('Prolly', () => {
           counter.should.be.aboveOrEqual(multiplier / 2);
         });
     });
+
+    it('should reject with error if maximum attempts exceeded', () => {
+      const interval  = 2;
+      const maxAttempts = 10;
+
+      let counter = 0;
+      const increment = () => {
+        counter += 1;
+        return counter;
+      };
+
+      return poll(
+        () => Promise.resolve(increment()),
+        interval,
+        result => result > maxAttempts,
+        0,
+        maxAttempts)
+        .then(() => Promise.reject('did not reject before promise resolution'))
+        .catch(err => {
+          err.should.be.instanceOf(Error).and.have.property('message').eql('Maximum Polling Attempts Exceeded');
+        });
+    });
   });
 });
