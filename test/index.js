@@ -101,6 +101,23 @@ describe('Prolly', () => {
     });
   });
 
+  describe('.chunkSequence', () => {
+    const chunkSequence = Prolly.chunkSequence;
+    it('should evaluate a sequence of promises, in series, chunked into batches of given size', () => {
+      const vals  = new Array(8).fill(4);
+      const chunkSize = 2;
+      return chunkSequence(vals, chunkSize, v =>
+        new Promise(resolve => setTimeout(() => resolve(Date.now()), v)))
+        .then(results => {
+          results.should.be.an.Array().of.length(vals.length / chunkSize);
+          results.reduce((accu, v) => {
+            v.should.be.greaterThan(accu[accu.length - 1]);
+            return accu.concat(v);
+          }, [Number.NEGATIVE_INFINITY]);
+        });
+    });
+  });
+
   describe('.wait', () => {
     const wait = Prolly.wait;
     it('should return after at least the specified number of milliseconds', () => {

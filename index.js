@@ -2,6 +2,22 @@
 
 const isFunction = object => typeof (object) === 'function';
 
+const chunk = (array, sizeParam) => {
+  const size = Math.max(sizeParam, 0);
+  const length = array === null ? 0 : array.length;
+  if (!length || size < 1) {
+    return [];
+  }
+  let index = 0;
+  let resIndex = 0;
+  const result = new Array(Math.ceil(length / size));
+
+  while (index < length) {
+    result[resIndex += 1] = array.slice(index, (index += size));
+  }
+  return result;
+};
+
 exports.sequence = (arr, initial_value) => (arr || []).reduce((p, fn, index) =>
   p.then(results => Promise.resolve(isFunction(fn) ? fn.call(fn, index) : fn)
     .then((result) => {
@@ -11,6 +27,9 @@ exports.sequence = (arr, initial_value) => (arr || []).reduce((p, fn, index) =>
 
 exports.mapSequence = (arr, fn, initial_value) =>
   exports.sequence((arr || []).map(item => index => fn.call(fn, item, index)), initial_value);
+
+exports.chunkSequence = (arr, chunkSize, fn, initial_value) =>
+  exports.mapSequence(chunk((arr || []), chunkSize), fn, initial_value);
 
 exports.wait = (millis, return_value) =>
   new Promise((resolve, reject) => setTimeout(() => resolve(return_value), millis));
