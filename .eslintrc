@@ -23,6 +23,7 @@
     "new-cap": 0,
 
     "camelcase": 0,
-    "quotes": 0
+    "quotes": 0,
+    "strict": 0,
   }
 }

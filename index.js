@@ -1,3 +1,5 @@
+"use strict";
+
 const isFunction = object => typeof (object) === 'function';
 
 exports.sequence = (arr, initial_value) => (arr || []).reduce((p, fn, index) =>
