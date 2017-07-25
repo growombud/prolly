@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run mocha && npm run lint",
+    "ci-test": "npm run coverage && npm run lint && ./node_modules/.bin/codecov",
+    "coverage": "./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- -R spec",
     "mocha": "mocha -R spec ./test",
     "lint": "./node_modules/eslint/bin/eslint.js ."
   },
@@ -30,6 +32,7 @@
   "readmeFilename": "README.md",
   "homepage": "https://github.com/growombud/prolly#readme",
   "devDependencies": {
+    "codecov": "2.2.0",
     "eslint": "4.3.0",
     "eslint-config-airbnb": "15.1.0",
     "eslint-plugin-import": "2.7.0",
