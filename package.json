@@ -30,10 +30,13 @@
   "readmeFilename": "README.md",
   "homepage": "https://github.com/growombud/prolly#readme",
   "devDependencies": {
-    "eslint": "2.4.0",
-    "eslint-config-airbnb": "6.1.0",
-    "mocha": "2.4.5",
-    "should": "8.2.2"
+    "eslint": "4.3.0",
+    "eslint-config-airbnb": "15.1.0",
+    "eslint-plugin-import": "2.7.0",
+    "eslint-plugin-mocha": "4.11.0",
+    "istanbul": "0.4.5",
+    "mocha": "3.4.2",
+    "should": "11.2.1"
   },
   "engine": "node >= 4.0.0"
 }
