@@ -8,6 +8,7 @@
   "rules": {
     "arrow-parens": ["error", "as-needed"],
     "no-unused-vars": ["error", { "varsIgnorePattern": "^should$" }],
-    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.js"]}]
+    "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.js"]}],
+    "strict": 0
   }
 }
