@@ -1,6 +1,10 @@
 language: node_js
 node_js:
   - node
+  - '7'
+  - '6'
+  - '5'
+  - '4'
 deploy:
   provider: npm
   email: jonathan.griggs@gmail.com
