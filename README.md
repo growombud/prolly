@@ -129,6 +129,30 @@ asyncFn()
   .then(result => Prolly.wait(2000, result))
   .then(result => dependentFn(result));
 ```
+## waitFor ( time_in_millis, fn_or_promise )
+
+Returns a promise that resolves _iff_ the provided function or promise (```fn_or_promise```) resolves before the specified time (```time_in_millies```) elapses.  Otherwise, the returned promise rejects with a timeout error.
+
+##### Use Case
+
+Fulfills a need to place an upper bound on asynchronous execution with a graceful way to detect and handle when the boundary is crossed.
+
+Real-world use-cases include identifying and handling long running requests when using conventional or global timeouts are insufficient.
+
+##### Example
+
+1. `asyncFn`, returns a Promise that dependably resolves within two seconds.
+2. Any async execution beyond two seconds is an indication of something bad.
+
+```
+Prolly.waitFor(2000, asyncFn())
+  .then(result => {
+    // Promise returned by asyncFn() resolved with result before two seconds elapsed.
+  })
+  .catch(err => {
+    // Either the Promise returned by asyncFn() rejected with err or two seconds have elapsed.
+  });
+```
 
 ## poll ( fn, interval_in_millis, validateFn [, initial_delay_in_millis [, maximum_attempts]] )
 

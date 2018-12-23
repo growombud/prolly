@@ -55,3 +55,21 @@ exports.poll = (fn, delay, conditionFn, initial_delay, maximum_attempts) =>
     };
     schedule(initial_delay || 0, check);
   });
+
+exports.waitFor = (millis, fn) =>
+  new Promise((resolve, reject) => {
+    let timed_out = false;
+    const timeout = setTimeout(() => {
+      timed_out = true;
+      reject(new Error('Timeout occurred'));
+    }, millis);
+    const ifNotTimedOut = done => (arg) => {
+      if (!timed_out) {
+        clearTimeout(timeout);
+        done(arg);
+      }
+    };
+    Promise.resolve(isFunction(fn) ? fn.call(fn) : fn)
+      .then(ifNotTimedOut(resolve))
+      .catch(ifNotTimedOut(reject));
+  });
