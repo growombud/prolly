@@ -215,8 +215,8 @@ describe('Prolly', () => {
         });
     });
   });
-  describe('.waitFor', () => {
-    const waitFor = Prolly.waitFor;
+  describe('.untilTimeout', () => {
+    const untilTimeout = Prolly.untilTimeout;
     const wait = Prolly.wait;
     let rejectionHandler;
     afterEach(() => {
@@ -232,21 +232,32 @@ describe('Prolly', () => {
     it('should resolve async function before timeout occurs', () => {
       const return_value = { test: 123 };
       const fn = () => wait(5, return_value);
-      const waitForFn = waitFor(10, fn);
-      return waitForFn.should.be.fulfilledWith(return_value);
+      const untilTimeoutFn = untilTimeout(10, fn);
+      return untilTimeoutFn.should.be.fulfilledWith(return_value);
     });
     it('should resolve promise before timeout occurs', () => {
       const return_value = { test: 123 };
       const promise = Promise.resolve(wait(5, return_value));
-      const waitForPromise = waitFor(10, promise);
-      return waitForPromise.should.be.fulfilledWith(return_value);
+      const untilTimeoutPromise = untilTimeout(10, promise);
+      return untilTimeoutPromise.should.be.fulfilledWith(return_value);
     });
-    it('should reject after timeout occurs', () => {
-      const promise = waitFor(5, () => wait(10));
+    it('should reject with default error after timeout occurs', () => {
+      const promise = untilTimeout(5, () => wait(10));
       return promise.should.be.rejectedWith(Error, { message: 'Timeout occurred' });
     });
+    it('should reject with provided message after timeout occurs', () => {
+      const message = 'oooh nooo';
+      const promise = untilTimeout(5, () => wait(10), message);
+      return promise.should.be.rejectedWith(Error, { message });
+    });
+    it('should reject with provided error after timeout occurs', () => {
+      const message = 'different error';
+      const reason = new TypeError(message);
+      const promise = untilTimeout(5, () => wait(10), reason);
+      return promise.should.be.rejectedWith(TypeError, { message });
+    });
     it('should not resolve after rejected due to timeout', () => {
-      const promise = waitFor(5, () => wait(10));
+      const promise = untilTimeout(5, () => wait(10));
       return new Promise((resolve, reject) => {
         promise.then(reject).catch(() => {});
         rejectionHandler = reject;
@@ -254,7 +265,7 @@ describe('Prolly', () => {
       }).should.be.fulfilled();
     });
     it('should not reject after resolve due to timeout', () => {
-      const promise = waitFor(10, () => wait(5));
+      const promise = untilTimeout(10, () => wait(5));
       return new Promise((resolve, reject) => {
         promise.then(() => {}).catch(reject);
         promise.catch(reject);

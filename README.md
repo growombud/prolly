@@ -129,9 +129,10 @@ asyncFn()
   .then(result => Prolly.wait(2000, result))
   .then(result => dependentFn(result));
 ```
-## waitFor ( time_in_millis, fn_or_promise )
+## untilTimeout ( time_in_millis, fn_or_promise [,reason] )
 
-Returns a promise that resolves _iff_ the provided function or promise (```fn_or_promise```) resolves before the specified time (```time_in_millies```) elapses.  Otherwise, the returned promise rejects with a timeout error.
+Returns a promise that resolves _iff_ the provided function or promise (```fn_or_promise```) resolves before the specified time (```time_in_millis```) elapses.  Otherwise, the returned promise rejects with an Error.
+An _optional_ parameter (```reason```) can be provided to override the default error.  This can either be a string used for the Error message or an object that is a custom error type (```instanceof Error```) to assist in detecting failure due to timeout.
 
 ##### Use Case
 
@@ -143,14 +144,18 @@ Real-world use-cases include identifying and handling long running requests when
 
 1. `asyncFn`, returns a Promise that dependably resolves within two seconds.
 2. Any async execution beyond two seconds is an indication of something bad.
+3. `MyTimeoutError` is some custom error type for which `instance of Error` returns true.
 
 ```
-Prolly.waitFor(2000, asyncFn())
+Prolly.untilTimeout(2000, asyncFn(), new MyTimeoutError())
   .then(result => {
     // Promise returned by asyncFn() resolved with result before two seconds elapsed.
   })
+  .catch(MyTimeoutError, () => {
+    // Two seconds elapsed before the Promise returned by asyncFn() could resolve.
+  });
   .catch(err => {
-    // Either the Promise returned by asyncFn() rejected with err or two seconds have elapsed.
+    // The Promise returned by asyncFn() rejected with err
   });
 ```
 

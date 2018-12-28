@@ -56,12 +56,13 @@ exports.poll = (fn, delay, conditionFn, initial_delay, maximum_attempts) =>
     schedule(initial_delay || 0, check);
   });
 
-exports.waitFor = (millis, fn) =>
+exports.untilTimeout = (millis, fn, reason) =>
   new Promise((resolve, reject) => {
     let timed_out = false;
+    const error_override = reason && (reason instanceof Error ? reason : new Error(String(reason)));
     const timeout = setTimeout(() => {
       timed_out = true;
-      reject(new Error('Timeout occurred'));
+      reject(error_override || new Error('Timeout occurred'));
     }, millis);
     const ifNotTimedOut = done => (arg) => {
       if (!timed_out) {
