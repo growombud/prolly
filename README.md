@@ -129,6 +129,35 @@ asyncFn()
   .then(result => Prolly.wait(2000, result))
   .then(result => dependentFn(result));
 ```
+## untilTimeout ( time_in_millis, fn_or_promise [,reason] )
+
+Returns a promise that resolves _iff_ the provided function or promise (```fn_or_promise```) resolves before the specified time (```time_in_millis```) elapses.  Otherwise, the returned promise rejects with an Error.
+An _optional_ parameter (```reason```) can be provided to override the default error.  This can either be a string used for the Error message or an object that is a custom error type (```instanceof Error```) to assist in detecting failure due to timeout.
+
+##### Use Case
+
+Fulfills a need to place an upper bound on asynchronous execution with a graceful way to detect and handle when the boundary is crossed.
+
+Real-world use-cases include identifying and handling long running requests when using conventional or global timeouts are insufficient.
+
+##### Example
+
+1. `asyncFn`, returns a Promise that dependably resolves within two seconds.
+2. Any async execution beyond two seconds is an indication of something bad.
+3. `MyTimeoutError` is some custom error type for which `instance of Error` returns true.
+
+```
+Prolly.untilTimeout(2000, asyncFn(), new MyTimeoutError())
+  .then(result => {
+    // Promise returned by asyncFn() resolved with result before two seconds elapsed.
+  })
+  .catch(MyTimeoutError, () => {
+    // Two seconds elapsed before the Promise returned by asyncFn() could resolve.
+  });
+  .catch(err => {
+    // The Promise returned by asyncFn() rejected with err
+  });
+```
 
 ## poll ( fn, interval_in_millis, validateFn [, initial_delay_in_millis [, maximum_attempts]] )
 
@@ -175,7 +204,7 @@ Prolly.poll(isReady, 5000, validateFn, 1000, 10)
 
 The MIT License (MIT)
 
-Copyright (c) 2016 Ombud
+Copyright (c) 2019 Ombud
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
