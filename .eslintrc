@@ -1,5 +1,5 @@
 {
-  "extends":"airbnb/base",
+  "extends":"eslint:recommended",
   "env": {
     "node":true,
     "es6":true,
@@ -7,23 +7,5 @@
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module"
-  },
-  "rules": {
-    "func-names": 2,
-    "indent": [ 2, 2, {"SwitchCase": 1}],
-    "no-console": 2,
-    "no-multi-spaces": [ 2, { "exceptions": { "VariableDeclarator": true, "AssignmentExpression": true}}],
-    "no-unused-vars": [2, {"vars": "all", "args": "none"}],
-
-    "no-nested-ternary": 1,
-    "one-var": [ 1, { "uninitialized": "always", "initialized": "never" }],
-
-    "comma-dangle": 0,
-    "id-length": 0,
-    "new-cap": 0,
-
-    "camelcase": 0,
-    "quotes": 0,
-    "strict": 0,
   }
 }

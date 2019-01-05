@@ -32,7 +32,7 @@ exports.chunkSequence = (arr, chunkSize, fn, initial_value) =>
   exports.mapSequence(chunk((arr || []), chunkSize), fn, initial_value);
 
 exports.wait = (millis, return_value) =>
-  new Promise((resolve, reject) => setTimeout(() => resolve(return_value), millis));
+  new Promise(resolve => setTimeout(() => resolve(return_value), millis));
 
 exports.poll = (fn, delay, conditionFn, initial_delay, maximum_attempts) =>
   new Promise((resolve, reject) => {
