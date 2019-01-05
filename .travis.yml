@@ -6,9 +6,9 @@ node_js:
 - '5'
 - '4'
 install:
-- npm install
+- yarn install
 script:
-- npm run ci-test
+- yarn run ci-test
 deploy:
   provider: npm
   email: jonathan.griggs@gmail.com
