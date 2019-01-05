@@ -1,19 +1,19 @@
 language: node_js
 node_js:
-  - node
-  - '7'
-  - '6'
-  - '5'
-  - '4'
+- node
+- '7'
+- '6'
+- '5'
+- '4'
 install:
-  - npm install
+- npm install
 script:
-  - npm run ci-test
+- npm run ci-test
 deploy:
   provider: npm
   email: jonathan.griggs@gmail.com
   api_key:
-    secure: l3pCbcmP4r4SwPrn7kKXzHPHCcrHAVsdGFMGdZ+kxYVn8WypEATAFKvSclWEyaNjVz5/Lb/QbIsv0gfzyqZgsKIQBUBorU0PezXW+TQUlObElc5p7YwJ95QdGJn2Z3x0lRKcCmrcr3+u2NBr+cHMdv7QNjUCNIAhqdBqIhhdbCRkvR+c1TxwYSIyoZOJ4akh+uJ/RAZMEEmESj29+m7xEXhz2VYaxE9tnt96EcsIWaeqTwtj0rtWz3PbiHYzABZW8DWmDkrDEJt/zYjGovyErD09fjVkrhleHRP6swZfjEC9QZFGpJVhziaZjmF/cPI1pzQD97NYbL7I+ePq/D8F5tABDUEbzBYmP7Gm3sXNk54fPiU4xX4Ujd39lqsQYXKLiCG2GVVwyJawr7sAa45MxaJmkBAy1jSKKgX6yj/EzXGB5U6TwM0Netvl2wInV2rnnCuBn7jZHNEj9qwm9bhAof61YZ/PGPtYLMOVzLXuzg65iOo6wf1FY4iWkyvnN+gVrr/0oVWo7tGA1kwzHlaJ2jhZ38Eu5sKf11uy0SLDggFkYzlY/bn4rpM+HBNSpp9pGh+D/wjYmslkzz9H5Tede6humfBVp7FfzB0YYPyqx72sGQ8HjeW4PxDHb8v2D7LSSgGfgezkGRqGhPa7slgpbWYLWi7XsKxrYuwhBCEJims=
+    secure: WhiPPhT4MbiEKQDkh46txbqm+zUpUo8Rnk2HRGd1ksfpa0k62xM9nFGeS76nBgR/9nKvhCGyXydW3P0P0j6wAFCm3dK/m+AqvHF8HHGic8VO8nRU3WFLdhiM/7Op0gOQub9cFYwBcShQ/p/uPbxpXg8h258jhFC/oHFsWoJNR5XzIdlBZNNCvbRweZxQDUTrG+m3RJrnOeM+Q0xd7hPh8pgBGOJIscV8J2pUg8q512UyPOc3CIex/hUYRm+XKdLf8xlBxobUGnS8ksp3N8JzJJpi9si/4EQqOHPqxk9kendbW3ETqvE4Cm45vvXxOgbDhRkGTwkAvRUdt0sEWRXAzWoFO4RSm4N5ZQfGX7HKaDkPU4a+cl1eZMoaGvTW4pXexKjiSqakNggs+7BD2oOz4edp0LA+vvYH8hMTfVSOSzNRguaTwVgiFGxUu04JTo9KAwzzU+UFfaOnRZ8empz1nK4Qh9p3kh1kRr0EEiRicX54vfZOBO4O8mWwW2LrQnsjUghYLYgTAKi8s90bNCpTaycNhXlB7r751mtkezuVOUtqMO9YUCE33qTc+9jeb6yNGsi7+AoUO3dnoFmO9JS3297yVhnoNnpRaR+qGXJnW27zkfSK1+nhB1sBoH8d22fMua7+Toxx+hatnLqrOi1zyFomqdxzi7a8EUDp6IKy/EU=
   on:
     tags: true
     repo: growombud/prolly
