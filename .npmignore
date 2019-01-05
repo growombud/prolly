@@ -5,3 +5,4 @@ test
 .npmignore
 .eslintrc
 .eslintignore
+yarn.lock
