@@ -82,11 +82,10 @@ exports.untilTimeout = (millis, fn, reason) =>
     : fn.then(result => ({ result, absIndex }))
   ].map((p, i) => p.then(obj => Object.assign(obj, { pIndex: i })))
 
-
   exports.parallel = (arr = [], concurrency = 2) => {
     if (concurrency < 2) return exports.sequence(arr);
     if (concurrency >= arr.length) return Promise.all(arr.map((fn, index) => Promise.resolve(isFunction(fn) ? fn.call(fn, index) : fn)));
-    let pool = [];
+
     return arr.reduce((p, fn, index) => {
       return p.then(({ pool, results }) => {
         if (pool.length < concurrency) {
@@ -103,7 +102,7 @@ exports.untilTimeout = (millis, fn, reason) =>
             };
           });
       });
-    }, Promise.resolve({ pool, results: []}))
+    }, Promise.resolve({ pool: [], results: []}))
     .then(({ results, pool }) => {
       return Promise.all(pool)
         .then(lastPromises => {
