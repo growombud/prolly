@@ -390,6 +390,26 @@ describe('Prolly', () => {
             });
           });
       });
+      it('should execute with concurrency === 2, in-flight Promises instead of functions', () => {
+        const p1 = wait(20, 1);
+        const p2 = wait(10, 2);
+        const p3 = wait(5, 3);
+        const p4 = wait(25, 4);
+        const p5 = wait(5, 5);
+        const p6 = wait(5, 6);
+        const start = Date.now();
+        return parallel([p1, p2, p3, p4, p5, p6], 2)
+          .then(results => {
+            const duration = Date.now() - start;
+            results.should.be.an.Array();
+            results.should.be.an.Array().of.length(6);
+            should(duration).be.greaterThanOrEqual(25);
+            should(duration).be.lessThanOrEqual(35);
+            results.forEach((r, index) => {
+              r.should.be.a.Number().eql(index+1);
+            });
+          });
+      });
       it('should reject if any fail', () => {
         const p1 = () => wait(20, 1);
         const p2 = () => wait(10, 2);
