@@ -272,4 +272,143 @@ describe('Prolly', () => {
       }).should.be.fulfilled();
     });
   });
+  describe('.parallel', () => {
+    const parallel = Prolly.parallel;
+    const wait = Prolly.wait;
+    describe('concurrency < 2', () => {
+      it('should execute all tests in sequence', () => {
+        const p1 = () => wait(5, 1);
+        const p2 = () => wait(5, 2);
+        const p3 = () => wait(5, 3);
+        const start = Date.now();
+        return parallel([p1, p2, p3], 1)
+          .then(results => {
+            const duration = Date.now() - start;
+            results.should.be.an.Array();
+            should(duration).be.greaterThanOrEqual(15);
+            results.forEach((r, index) => {
+              r.should.be.a.Number().eql(index+1);
+            });
+          });
+      });
+    });
+    describe('concurrency === arr.length', () => {
+      it('should execute all tests in parallel', () => {
+        const p1 = () => wait(5, 1);
+        const p2 = () => wait(5, 2);
+        const p3 = () => wait(5, 3);
+        const start = Date.now();
+        return parallel([p1, p2, p3], 3)
+          .then(results => {
+            const duration = Date.now() - start;
+            results.should.be.an.Array();
+            should(duration).be.lessThan(10);
+            should(duration).be.greaterThanOrEqual(5);
+            results.forEach((r, index) => {
+              r.should.be.a.Number().eql(index+1);
+            });
+          });
+      });
+    });
+    describe('default concurrency', () => {
+      it('should execute with concurrency === 2', () => {
+        const p1 = () => wait(5, 1);
+        const p2 = () => wait(5, 2);
+        const p3 = () => wait(5, 3);
+        const p4 = () => wait(5, 4);
+        const start = Date.now();
+        return parallel([p1, p2, p3, p4])
+          .then(results => {
+            const duration = Date.now() - start;
+            results.should.be.an.Array().of.length(4);
+            should(duration).be.greaterThanOrEqual(10);
+            should(duration).be.lessThan(20);
+            results.forEach((r, index) => {
+              r.should.be.a.Number().eql(index+1);
+            });
+          });
+      });
+    });
+    describe('concurrency < arr.length', () => {
+      it('should execute with concurrency === 4', () => {
+        const p1 = () => wait(20, 1);
+        const p2 = () => wait(10, 2);
+        const p3 = () => wait(5, 3);
+        const p4 = () => wait(25, 4);
+        const p5 = () => wait(5, 5);
+        const p6 = () => wait(5, 6);
+        const start = Date.now();
+        return parallel([p1, p2, p3, p4, p5, p6], 4)
+          .then(results => {
+            const duration = Date.now() - start;
+            results.should.be.an.Array();
+            results.should.be.an.Array().of.length(6);
+            should(duration).be.greaterThanOrEqual(25);
+            should(duration).be.lessThan(35);
+            results.forEach((r, index) => {
+              r.should.be.a.Number().eql(index+1);
+            });
+          });
+      });
+      it('should execute with concurrency === 3', () => {
+        const p1 = () => wait(20, 1);
+        const p2 = () => wait(10, 2);
+        const p3 = () => wait(5, 3);
+        const p4 = () => wait(25, 4);
+        const p5 = () => wait(5, 5);
+        const p6 = () => wait(5, 6);
+        const start = Date.now();
+        return parallel([p1, p2, p3, p4, p5, p6], 3)
+          .then(results => {
+            const duration = Date.now() - start;
+            results.should.be.an.Array();
+            results.should.be.an.Array().of.length(6);
+            should(duration).be.greaterThanOrEqual(30);
+            should(duration).be.lessThanOrEqual(35);
+            results.forEach((r, index) => {
+              r.should.be.a.Number().eql(index+1);
+            });
+          });
+      });
+      it('should execute with concurrency === 2', () => {
+        const p1 = () => wait(20, 1);
+        const p2 = () => wait(10, 2);
+        const p3 = () => wait(5, 3);
+        const p4 = () => wait(25, 4);
+        const p5 = () => wait(5, 5);
+        const p6 = () => wait(5, 6);
+        const start = Date.now();
+        return parallel([p1, p2, p3, p4, p5, p6], 2)
+          .then(results => {
+            const duration = Date.now() - start;
+            results.should.be.an.Array();
+            results.should.be.an.Array().of.length(6);
+            should(duration).be.greaterThanOrEqual(40);
+            should(duration).be.lessThanOrEqual(50);
+            results.forEach((r, index) => {
+              r.should.be.a.Number().eql(index+1);
+            });
+          });
+      });
+      it('should reject if any fail', () => {
+        const p1 = () => wait(20, 1);
+        const p2 = () => wait(10, 2);
+        const p3 = () => wait(5, 3);
+        const p4 = () => wait(25, 4).then(() => Promise.reject(new Error('Some Error')));
+        const p5 = () => wait(5, 5);
+        const p6 = () => wait(5, 6);
+        const start = Date.now();
+        return parallel([p1, p2, p3, p4, p5, p6], 2)
+          .then(results => {
+            results.should.not.be.ok();
+          })
+          .catch(err => {
+            err.should.be.an.Error();
+            const duration = Date.now() - start;
+            should(duration).be.greaterThanOrEqual(40);
+            should(duration).be.lessThanOrEqual(50);
+          });
+      });
+    });
+  });
 });
