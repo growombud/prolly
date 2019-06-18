@@ -159,6 +159,26 @@ Prolly.untilTimeout(2000, asyncFn(), new MyTimeoutError())
   });
 ```
 
+## parallel ( fnArray [, concurrency = 2] )
+Returns a promise that resolves after all functions have been fulfilled, limited to maximum concurrent executions specified with ```concurrency``` param (default: 2)
+
+##### Use Case
+Resolving an array of *heterogeneous* asynchronous operations, limiting the number of concurrent, in-flight executions.
+
+Useful where operations need to be performed on different data, resolution order is not critical, and control over number of concurrent, asynchronous calls is desirable.
+
+##### Example
+
+1. Wish to persist a list of user data for hundreds of users
+2. Do not wish to overload the database, and determined that the optimal number of concurrent save calls is 3
+
+```
+
+const dataSaveFunctions = userDataForHundredsOfUsers.map(data => () => saveUserData(data));
+
+const results = Prolly.parallel( dataSaveFunctions, 3 );
+```
+
 ## poll ( fn, interval_in_millis, validateFn [, initial_delay_in_millis [, maximum_attempts]] )
 
 Returns a promise that calls a function (```fn```) at a specified interval (```interval_in_millis```) until the provided validation function (```validateFn```) returns a truthy value.

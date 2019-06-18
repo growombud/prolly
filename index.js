@@ -74,3 +74,40 @@ exports.untilTimeout = (millis, fn, reason) =>
       .then(ifNotTimedOut(resolve))
       .catch(ifNotTimedOut(reject));
   });
+
+  const buildNextPool = (pool, absIndex, fn) => [
+    ...pool, 
+    isFunction(fn) 
+    ? fn.call(fn, absIndex).then(result => ({ result, absIndex }))
+    : fn.then(result => ({ result, absIndex }))
+  ].map((p, i) => p.then(obj => Object.assign(obj, { pIndex: i })))
+
+
+  exports.parallel = (arr = [], concurrency = 2) => {
+    if (concurrency < 2) return exports.sequence(arr);
+    if (concurrency >= arr.length) return Promise.all(arr.map((fn, index) => Promise.resolve(isFunction(fn) ? fn.call(fn, index) : fn)));
+    let pool = [];
+    return arr.reduce((p, fn, index) => {
+      return p.then(({ pool, results }) => {
+        if (pool.length < concurrency) {
+          return { 
+            pool: buildNextPool(pool, index, fn),
+            results,
+          };
+        }
+        return Promise.race(pool)
+          .then(({ result, pIndex, absIndex }) => {
+            return { 
+              pool: buildNextPool(pool.filter((p, i) => i !== pIndex), index, fn),
+              results: [...results, { result, absIndex }],
+            };
+          });
+      });
+    }, Promise.resolve({ pool, results: []}))
+    .then(({ results, pool }) => {
+      return Promise.all(pool)
+        .then(lastPromises => {
+          return [...results, ...lastPromises].sort((a, b) => a.absIndex - b.absIndex).map(({ result }) => result);
+        });
+    });
+  }
