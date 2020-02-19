@@ -32,7 +32,7 @@
   "readmeFilename": "README.md",
   "homepage": "https://github.com/growombud/prolly#readme",
   "devDependencies": {
-    "codecov": "3.6.1",
+    "codecov": "3.6.5",
     "eslint": "6.8.0",
     "eslint-plugin-import": "2.19.1",
     "eslint-plugin-mocha": "6.2.2",
