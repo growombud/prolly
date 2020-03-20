@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run mocha && npm run lint",
-    "ci-test": "npm run coverage && npm run lint && ./node_modules/.bin/codecov",
+    "ci-test": "npm run coverage && npm run lint",
     "coverage": "npx nyc npm run test",
     "mocha": "mocha -R spec ./test",
     "lint": "./node_modules/eslint/bin/eslint.js ."
@@ -32,7 +32,6 @@
   "readmeFilename": "README.md",
   "homepage": "https://github.com/growombud/prolly#readme",
   "devDependencies": {
-    "codecov": "3.6.5",
     "eslint": "^6.8.0",
     "eslint-plugin-import": "2.19.1",
     "eslint-plugin-mocha": "6.2.2",
