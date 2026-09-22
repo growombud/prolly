@@ -15,7 +15,9 @@ permissions:
 jobs:
   build:
     name: Build
-    runs-on: arc-runner-build
+    # prolly is public: the org's ARC runners don't accept public repos, and
+    # fork PRs shouldn't run on internal infrastructure anyway.
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - name: Checkout
