@@ -1,0 +1,5 @@
+{
+    "reporter": ["json", "text"],
+    "all": true,
+    "include": ["index.js"]
+}

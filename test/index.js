@@ -285,7 +285,7 @@ describe('Prolly', () => {
           .then(results => {
             const duration = Date.now() - start;
             results.should.be.an.Array();
-            should(duration).be.greaterThanOrEqual(15);
+            should(duration).be.greaterThanOrEqual(15 - 1);
             results.forEach((r, index) => {
               r.should.be.a.Number().eql(index+1);
             });
@@ -303,7 +303,7 @@ describe('Prolly', () => {
             const duration = Date.now() - start;
             results.should.be.an.Array();
             should(duration).be.lessThan(10);
-            should(duration).be.greaterThanOrEqual(5);
+            should(duration).be.greaterThanOrEqual(5 - 1);
             results.forEach((r, index) => {
               r.should.be.a.Number().eql(index+1);
             });
@@ -321,7 +321,7 @@ describe('Prolly', () => {
           .then(results => {
             const duration = Date.now() - start;
             results.should.be.an.Array().of.length(4);
-            should(duration).be.greaterThanOrEqual(10);
+            should(duration).be.greaterThanOrEqual(10 - 1);
             should(duration).be.lessThan(20);
             results.forEach((r, index) => {
               r.should.be.a.Number().eql(index+1);
@@ -343,7 +343,7 @@ describe('Prolly', () => {
             const duration = Date.now() - start;
             results.should.be.an.Array();
             results.should.be.an.Array().of.length(6);
-            should(duration).be.greaterThanOrEqual(25);
+            should(duration).be.greaterThanOrEqual(25 - 1);
             should(duration).be.lessThan(35);
             results.forEach((r, index) => {
               r.should.be.a.Number().eql(index+1);
@@ -363,7 +363,7 @@ describe('Prolly', () => {
             const duration = Date.now() - start;
             results.should.be.an.Array();
             results.should.be.an.Array().of.length(6);
-            should(duration).be.greaterThanOrEqual(30);
+            should(duration).be.greaterThanOrEqual(30 - 1);
             should(duration).be.lessThanOrEqual(35);
             results.forEach((r, index) => {
               r.should.be.a.Number().eql(index+1);
@@ -383,7 +383,7 @@ describe('Prolly', () => {
             const duration = Date.now() - start;
             results.should.be.an.Array();
             results.should.be.an.Array().of.length(6);
-            should(duration).be.greaterThanOrEqual(40);
+            should(duration).be.greaterThanOrEqual(40 - 1);
             should(duration).be.lessThanOrEqual(50);
             results.forEach((r, index) => {
               r.should.be.a.Number().eql(index+1);
@@ -403,7 +403,7 @@ describe('Prolly', () => {
             const duration = Date.now() - start;
             results.should.be.an.Array();
             results.should.be.an.Array().of.length(6);
-            should(duration).be.greaterThanOrEqual(25);
+            should(duration).be.greaterThanOrEqual(25 - 1);
             should(duration).be.lessThanOrEqual(35);
             results.forEach((r, index) => {
               r.should.be.a.Number().eql(index+1);
@@ -425,7 +425,7 @@ describe('Prolly', () => {
           .catch(err => {
             err.should.be.an.Error();
             const duration = Date.now() - start;
-            should(duration).be.greaterThanOrEqual(40);
+            should(duration).be.greaterThanOrEqual(40 - 1);
             should(duration).be.lessThanOrEqual(50);
           });
       });

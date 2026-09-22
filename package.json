@@ -6,9 +6,9 @@
   "scripts": {
     "test": "npm run mocha && npm run lint",
     "ci-test": "npm run coverage && npm run lint",
-    "coverage": "npx nyc npm run test",
+    "coverage": "c8 npm run test",
     "mocha": "mocha -R spec ./test",
-    "lint": "./node_modules/eslint/bin/eslint.js ."
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
@@ -32,12 +32,14 @@
   "readmeFilename": "README.md",
   "homepage": "https://github.com/growombud/prolly#readme",
   "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-plugin-import": "2.19.1",
-    "eslint-plugin-mocha": "6.2.2",
-    "mocha": "^7.1.1",
-    "nyc": "^15.0.0",
+    "@eslint/js": "^10.0.1",
+    "c8": "^12.0.0",
+    "eslint": "^10.11.0",
+    "globals": "^17.12.0",
+    "mocha": "^12.0.2",
     "should": "13.2.3"
   },
-  "engine": "node >= 4.0.0"
+  "engines": {
+    "node": ">=4.0.0"
+  }
 }

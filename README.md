@@ -2,8 +2,7 @@
 A minimalist utility library for ES6 Native Promises
 
 [![npm version](https://badge.fury.io/js/prolly.svg)](https://badge.fury.io/js/prolly)
-[![Build Status](https://travis-ci.org/growombud/prolly.svg?branch=master)](https://travis-ci.org/growombud/prolly)
-[![codecov](https://codecov.io/gh/growombud/prolly/branch/master/graph/badge.svg)](https://codecov.io/gh/growombud/prolly)
+[![Build](https://github.com/growombud/prolly/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/growombud/prolly/actions/workflows/build.yml)
 
 ## Overview
 Prolly is a small utility library intended to bridge the gap between Native ES6 Promises and more fully-featured Promise libraries like Bluebird, when, and Q.

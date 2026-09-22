@@ -1,0 +1,68 @@
+name: Build
+
+on:
+  pull_request:
+  push:
+    branches: [master]
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build
+    # prolly is public: the org's ARC runners don't accept public repos, and
+    # fork PRs shouldn't run on internal infrastructure anyway.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      - name: Setup Node
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        with:
+          node-version-file: .nvmrc
+
+      - name: Enable Corepack
+        # Provides a `yarn` binary (classic v1, the corepack default with no
+        # packageManager field) on the runner.
+        run: corepack enable
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Test
+        # Runs mocha under c8 coverage, then eslint. Output is kept for the
+        # job summary; `shell: bash` adds pipefail so failures still fail the step.
+        shell: bash
+        run: yarn ci-test 2>&1 | tee "$RUNNER_TEMP/test-output.txt"
+
+      - name: Write job summary
+        if: always()
+        env:
+          TEST_OUTPUT: ${{ runner.temp }}/test-output.txt
+        run: |
+          [ -f "$TEST_OUTPUT" ] || exit 0
+          sed -i 's/\x1b\[[0-9;]*m//g' "$TEST_OUTPUT"
+          {
+            echo '## Test results'
+            grep -E '^ +[0-9]+ (passing|failing|pending)' "$TEST_OUTPUT" | sed -E 's/^ +/- /'
+            echo
+            echo '### Coverage'
+            echo '```text'
+            awk '/^-+\|/ { n++ } n { print } n == 3 { exit }' "$TEST_OUTPUT"
+            echo '```'
+            echo
+            echo '<details><summary>Full output</summary>'
+            echo
+            echo '```text'
+            cat "$TEST_OUTPUT"
+            echo '```'
+            echo
+            echo '</details>'
+          } >> "$GITHUB_STEP_SUMMARY"
