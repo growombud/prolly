@@ -37,5 +37,32 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Test
-        # Runs mocha under c8 coverage, then eslint.
-        run: yarn ci-test
+        # Runs mocha under c8 coverage, then eslint. Output is kept for the
+        # job summary; `shell: bash` adds pipefail so failures still fail the step.
+        shell: bash
+        run: yarn ci-test 2>&1 | tee "$RUNNER_TEMP/test-output.txt"
+
+      - name: Write job summary
+        if: always()
+        env:
+          TEST_OUTPUT: ${{ runner.temp }}/test-output.txt
+        run: |
+          [ -f "$TEST_OUTPUT" ] || exit 0
+          sed -i 's/\x1b\[[0-9;]*m//g' "$TEST_OUTPUT"
+          {
+            echo '## Test results'
+            grep -E '^ +[0-9]+ (passing|failing|pending)' "$TEST_OUTPUT" | sed -E 's/^ +/- /'
+            echo
+            echo '### Coverage'
+            echo '```text'
+            awk '/^-+\|/ { n++ } n { print } n == 3 { exit }' "$TEST_OUTPUT"
+            echo '```'
+            echo
+            echo '<details><summary>Full output</summary>'
+            echo
+            echo '```text'
+            cat "$TEST_OUTPUT"
+            echo '```'
+            echo
+            echo '</details>'
+          } >> "$GITHUB_STEP_SUMMARY"
