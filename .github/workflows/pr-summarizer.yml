@@ -1,0 +1,16 @@
+name: PR Summarizer
+
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  summarize:
+    name: Summarize PR
+    runs-on: arc-runner-agent
+    steps:
+      - uses: growombud/gha-shared/actions/pr-summarizer@main

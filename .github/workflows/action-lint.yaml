@@ -1,0 +1,14 @@
+name: Lint Actions
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/**
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/**
+
+jobs:
+  lint:
+    uses: growombud/gha-shared/.github/workflows/lint-actions.yml@main

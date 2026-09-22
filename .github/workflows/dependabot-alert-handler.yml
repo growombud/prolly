@@ -1,0 +1,27 @@
+name: Dependabot Alert Handler
+
+on:
+    workflow_dispatch:
+        inputs:
+            alert_number:
+                description: Dependabot alert number to process.
+                required: true
+                type: number
+            auto_fix_threshold:
+                description: "Minimum severity for auto-fix (critical, high, medium, low)."
+                required: false
+                type: string
+                default: "medium"
+
+permissions:
+    contents: write
+    pull-requests: write
+    issues: write
+    security-events: read
+
+jobs:
+    handle:
+        uses: growombud/gha-shared/.github/workflows/dependabot-alert-handler.yml@main
+        with:
+            alert_number: ${{ inputs.alert_number }}
+            auto_fix_threshold: ${{ inputs.auto_fix_threshold }}
