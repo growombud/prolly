@@ -38,7 +38,8 @@ jobs:
           package-manager-cache: false
 
       - name: Enable Corepack
-        run: corepack enable
+        # Node 25+ no longer bundles corepack; install the version Node 24 shipped.
+        run: npm install -g corepack@0.36.0 && corepack enable
 
       - name: Check release
         id: release
@@ -106,8 +107,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
         with:
-          # Staged publishing needs npm >= 11.15.0, which Node 24 bundles.
-          node-version: 24
+          # Staged publishing needs npm >= 11.15.0, which Node 26 bundles.
+          node-version: 26.13.0
           package-manager-cache: false
 
       - name: Stage
