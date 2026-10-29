@@ -30,8 +30,9 @@ jobs:
 
       - name: Enable Corepack
         # Provides a `yarn` binary (classic v1, the corepack default with no
-        # packageManager field) on the runner.
-        run: corepack enable
+        # packageManager field) on the runner. Node 25+ no longer bundles
+        # corepack, so install the version Node 24 shipped.
+        run: npm install -g corepack@0.36.0 && corepack enable
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
